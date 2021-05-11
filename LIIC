@@ -1,0 +1,131 @@
+// Linearly Interpolated Internal Coordinates
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <cstdio>
+#include <string>
+
+
+using namespace std;
+
+int main()
+{
+    // User Input
+    
+    
+    cout << "Number of atoms: ";
+    int natom ;
+    cin >> natom;
+    
+    int npoints;
+    cout << "Number of points to plot: ";
+    cin >> npoints;
+    
+    double nsteps;
+    nsteps = npoints + 1;
+    double lambda = 1/nsteps;
+    
+    
+    string fileName;
+    cout << "Enter .chk file name: (*****.chk): ";
+    cin >> fileName;
+
+     
+    // File Streaming
+
+    ifstream input1("1.xyz");
+    
+    int *zval = new int[natom];
+    double *x = new double[natom];
+    double *y = new double[natom];
+    double *z = new double[natom];
+
+    for(int i=0; i < natom; i++)
+      input1 >> zval[i] >> x[i] >> y[i] >> z[i];
+    
+    input1.close();
+    
+    ifstream input2("2.xyz");
+    
+    int *zval2 = new int[natom];
+    double *x2 = new double[natom];
+    double *y2 = new double[natom];
+    double *z2 = new double[natom];
+
+    for(int i=0; i < natom; i++)
+      input2 >> zval2[i] >> x2[i] >> y2[i] >> z2[i];
+
+    input2.close();
+
+
+    //Calculating step size
+    
+    int *zvallambda = new int[natom];
+    double *xlambda = new double[natom];
+    double *ylambda = new double[natom];
+    double *zlambda = new double[natom];
+    
+    for(int i=0; i < natom; i++)
+        zvallambda[i]=zval[i];
+    
+    for(int i=0; i < natom; i++)
+        xlambda[i]=lambda*(x2[i]-x[i]);
+    
+    for(int i=0; i < natom; i++)
+        ylambda[i]=lambda*(y2[i]-y[i]);
+    
+    for(int i=0; i < natom; i++)
+        zlambda[i]=lambda*(z2[i]-z[i]);
+
+    // Generating coordinates
+
+    
+    cout << "--Link1--" <<  endl;
+    cout << "%chk=" << fileName << ".chk" << endl;
+    cout << "#p rhf/cc-pvdz" << endl;
+    cout << endl;
+    cout << "Title" << endl;
+    cout << endl;
+    cout << "0 1" << endl;
+    
+    for(int i=0; i < natom; i++)
+    printf("%d %20.12f %20.12f %20.12f\n", (int) zval[i], x[i], y[i], z[i]);
+       cout << endl;
+
+    
+    for(int j=0; j < nsteps; j++){
+        for(int i=0; i < natom; i++)
+            zval[i]=zval[i];
+        
+        for(int i=0; i < natom; i++)
+            x[i]=x[i]+xlambda[i];
+        
+        for(int i=0; i < natom; i++)
+            y[i]=y[i]+ylambda[i];
+        
+        for(int i=0; i < natom; i++)
+            z[i]=z[i]+zlambda[i];
+
+  
+    // Output
+    
+        
+        cout << "--Link1--" <<  endl;
+        cout << "%chk=" << fileName << ".chk" << endl;
+        cout << "#p rhf/cc-pvdz" << endl;
+        cout << endl;
+        cout << "Title" << endl;
+        cout << endl;
+        cout << "0 1" << endl;
+         for(int i=0; i < natom; i++)
+            printf("%d %20.12f %20.12f %20.12f\n", (int) zval[i], x[i], y[i], z[i]);
+        cout << endl;
+        
+ 
+        }
+    
+    return 0;
+}
+
+
