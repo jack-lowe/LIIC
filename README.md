@@ -1,11 +1,11 @@
 ****************
-* Introduction *
+* Introduction 
 ****************
 
 This code generates a sets of linearly interpolated coordinates from two .xyz files and prints as a Gaussian09 input file (ORCA, GAMESS and QChem 5.0 coming soon)
 
 ****************
-* Instructions *
+* Instructions 
 ****************
 
 1) $ ./LIIC input.txt 1.xyz 2.xyz
@@ -107,7 +107,7 @@ Whereas the following will produce garbage:
 8          1.65424        1.81141       -0.10132
 
 ****************
-*    To-Do     *
+*    To-Do     
 ****************
 
 
